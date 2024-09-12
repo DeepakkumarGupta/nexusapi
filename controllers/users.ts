@@ -57,3 +57,15 @@ export const updateUser = async (req: express.Request, res: express.Response) =>
 
     }
 }
+
+
+export const dummyUserSayHi = async (req: express.Request, res: express.Response) => {
+    try {
+        res.send('Hi HI HELLIOO');
+        res.status(200);
+    } catch (error) {
+        console.log(error)
+        return res.sendStatus(400);
+
+    }
+}
