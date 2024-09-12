@@ -1,0 +1,1 @@
+This is a Boilerplate API Template with NodeJS, Express, MongoDB written in TypeScript with hot-reload
