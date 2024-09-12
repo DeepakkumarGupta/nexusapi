@@ -33,6 +33,11 @@ mongoose.connect(mongoUri).then(() => {
   console.log('Error connecting to MongoDB:', error);
 });
 
+// Home route with a message
+app.get('/', (req, res) => {
+  res.send('API is working!');
+});
+
 // Use the router
 app.use('/', router()); // Ensure the router is used with a base path
 
