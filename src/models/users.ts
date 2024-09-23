@@ -9,7 +9,10 @@ const UserSchema = new mongoose.Schema({
         salt: { type: String, select: false },
         sessionToken: { type: String, select: false },
 
-    }
+    },
+    isAdmin: { type: Boolean, default: false },
+    role: { type: String, default: 'member' },
+
 })
 
 

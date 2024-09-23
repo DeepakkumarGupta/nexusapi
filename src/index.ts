@@ -15,9 +15,25 @@ const app = express();
 const port = process.env.PORT || 5000;
 const mongoUri = process.env.MONGO_URI as string;
 
-// Middleware
+// CORS configuration to allow specific domains or ports
 app.use(cors({
   credentials: true,
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'https://admin.nexusbusinesstech.com',
+      'http://localhost:3000',
+      'http://localhost:3001'
+
+
+    ];
+
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
 }));
 
 app.use(compression());

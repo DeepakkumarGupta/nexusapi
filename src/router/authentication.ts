@@ -1,6 +1,7 @@
 import express from 'express';
 import { register, login, logout } from '../controllers/authentication';
 import rateLimit from 'express-rate-limit';
+import { isAdmin } from '../middlewares';
 
 // Rate limiter for registration
 const registerRateLimiter = rateLimit({
@@ -19,7 +20,7 @@ const loginRateLimiter = rateLimit({
 export default (router: express.Router) => {
   // Registration route with rate limiter
   router.post('/auth/register', registerRateLimiter, register);
-
+  router.post('/auth/admin/login', login)
   // Login route with rate limiter
   router.post('/auth/login', loginRateLimiter, login);
   router.post('/auth/logout', logout)
