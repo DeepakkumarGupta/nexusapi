@@ -56,6 +56,35 @@ export const updateUser = async (req: express.Request, res: express.Response) =>
 };
 
 
+// Controller to get the logged-in user's information
+export const getLoggedInUserInfo = async (req: express.Request, res: express.Response) => {
+    try {
+        const loggedInUserId = (req as any).identity.userId; // Assuming identity is set by isAuthenticated middleware
+
+        if (!loggedInUserId) {
+            return res.status(401).json({ message: 'Unauthorized: No user is logged in' }); // Not logged in
+        }
+
+        // Fetch user data using the userId
+        const user = await getUserById(loggedInUserId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' }); // User not found
+        }
+
+        // Respond with the user's info (exclude sensitive data like password)
+        return res.status(200).json({
+            username: user.username,
+            email: user.email,
+            roles: user.role,
+            // Add any other fields that you want to include
+        });
+    } catch (error) {
+        console.error('Error fetching logged-in user info:', error);
+        return res.sendStatus(500); // Internal server error
+    }
+};
+
 export const dummyUserSayHi = async (req: express.Request, res: express.Response) => {
     try {
         res.send('Hi HI HELLIOO');

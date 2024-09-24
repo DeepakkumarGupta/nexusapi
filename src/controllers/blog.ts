@@ -38,19 +38,26 @@ export const createBlog = async (req: express.Request, res: express.Response) =>
 export const deleteBlog = async (req: express.Request, res: express.Response) => {
     try {
         const { id } = req.params;
-        const blogPost = await BlogModel.findByIdAndDelete(id);
+        const blogPost = await BlogModel.findById(id);
 
         if (!blogPost) {
             return res.status(404).json({ message: 'Blog post not found.' });
         }
 
+        const loggedInUsername = (req as any).identity.username; // Get logged-in user from identity
+
+        // Check if the logged-in user is the author of the blog
+        if (blogPost.author !== loggedInUsername) {
+            return res.status(403).json({ message: 'You are not authorized to delete this post.' });
+        }
+
+        await BlogModel.findByIdAndDelete(id);
         return res.status(200).json({ message: 'Blog post deleted successfully.' });
     } catch (error) {
         console.error('Error deleting blog post:', error);
         return res.sendStatus(500); // Internal Server Error
     }
 };
-
 // Update Blog
 export const updateBlog = async (req: express.Request, res: express.Response) => {
     try {
@@ -61,6 +68,13 @@ export const updateBlog = async (req: express.Request, res: express.Response) =>
 
         if (!blogPost) {
             return res.status(404).json({ message: 'Blog post not found.' });
+        }
+
+        const loggedInUsername = (req as any).identity.username; // Get logged-in user from identity
+
+        // Check if the logged-in user is the author of the blog
+        if (blogPost.author !== loggedInUsername) {
+            return res.status(403).json({ message: 'You are not authorized to edit this post.' });
         }
 
         blogPost.title = title || blogPost.title;
@@ -78,6 +92,25 @@ export const updateBlog = async (req: express.Request, res: express.Response) =>
     }
 };
 
+// Controller to fetch a blog by its ID
+export const getBlogById = async (req: express.Request, res: express.Response) => {
+    try {
+        const { id } = req.params; // Get the blog ID from request parameters
+
+        // Find the blog by ID
+        const blogPost = await BlogModel.findById(id);
+
+        if (!blogPost) {
+            return res.status(404).json({ message: 'Blog post not found.' });
+        }
+
+        // Return the blog post data
+        return res.status(200).json(blogPost);
+    } catch (error) {
+        console.error('Error fetching blog post by ID:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
 // Get all blogs
 export const getAllBlogs = async (req: express.Request, res: express.Response) => {
     try {
@@ -131,6 +164,24 @@ export const bloglike = async (req: express.Request, res: express.Response) => {
     }
 };
 
+// Get all blogs by a specific author (username)
+export const getBlogsByAuthor = async (req: express.Request, res: express.Response) => {
+    try {
+        const { username } = req.params; // Extract the username from the request params
+
+        // Find all blog posts authored by the specified username
+        const blogs = await BlogModel.find({ author: username }).sort({ date: -1 });
+
+        if (!blogs.length) {
+            return res.status(404).json({ message: 'No blog posts found for this author.' });
+        }
+
+        return res.status(200).json(blogs);
+    } catch (error) {
+        console.error('Error fetching blogs by author:', error);
+        return res.sendStatus(500); // Internal Server Error
+    }
+};
 
 
 
