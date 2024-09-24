@@ -7,7 +7,7 @@ export const createUserByAdmin = async (req: express.Request, res: express.Respo
         const { email, password, username, role, isAdmin } = req.body;
 
         // Check if the required fields are provided
-        if (!email || !password || !username || !isAdmin) {
+        if (!email || !password || !username) {
             return res.status(400).json({ message: 'Username, email, and password are required.' });
         }
 

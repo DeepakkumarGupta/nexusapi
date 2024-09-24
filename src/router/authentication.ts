@@ -20,7 +20,7 @@ const loginRateLimiter = rateLimit({
 export default (router: express.Router) => {
   // Registration route with rate limiter
   router.post('/auth/register', registerRateLimiter, register);
-  router.post('/auth/admin/login', login)
+  router.post('/auth/admin/login', loginRateLimiter, login)
   // Login route with rate limiter
   router.post('/auth/login', loginRateLimiter, login);
   router.post('/auth/logout', logout)
