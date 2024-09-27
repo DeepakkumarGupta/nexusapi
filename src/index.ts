@@ -20,12 +20,15 @@ app.use(cors({
   credentials: true,
   origin: function (origin, callback) {
     const allowedOrigins = [
+      'https://urban-computing-machine-g6gww7w4p75cj7q-3000.app.github.dev',
+      'https://members-nbt-production.up.railway.app',
       'https://www.nexusbusinesstech.com',
       'http://nexusbusinesstech.com',
       'https://admin.nexusbusinesstech.com',
       'https://members.nexusbusinesstech.com',
       'http://localhost:3000',
       'http://localhost:3001',
+      // 'http://localhost:3002',
       'http://localhost:4000'
 
 
