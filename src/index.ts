@@ -20,9 +20,13 @@ app.use(cors({
   credentials: true,
   origin: function (origin, callback) {
     const allowedOrigins = [
+      'https://www.nexusbusinesstech.com',
+      'http://nexusbusinesstech.com',
       'https://admin.nexusbusinesstech.com',
+      'https://members.nexusbusinesstech.com',
       'http://localhost:3000',
-      'http://localhost:3001'
+      'http://localhost:3001',
+      'http://localhost:4000'
 
 
     ];

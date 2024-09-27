@@ -1,7 +1,6 @@
 import express from 'express';
 import { register, login, logout } from '../controllers/authentication';
 import rateLimit from 'express-rate-limit';
-import { isAdmin } from '../middlewares';
 
 // Rate limiter for registration
 const registerRateLimiter = rateLimit({
@@ -13,7 +12,7 @@ const registerRateLimiter = rateLimit({
 // Rate limiter for login
 const loginRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Limit each IP to 5 login attempts per 15 minutes
+  max: 50, // Limit each IP to 5 login attempts per 15 minutes
   message: 'Too many login attempts, please try again later.',
 });
 

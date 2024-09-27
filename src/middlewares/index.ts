@@ -46,6 +46,7 @@ export const isAuthenticated = async (req: express.Request, res: express.Respons
         return next();
     } catch (error) {
         console.error('Error in isAuthenticated middleware:', error);
+        console.log("sessionToken not found")
         res.sendStatus(500); // Internal Server Error
     }
 };

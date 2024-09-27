@@ -1,5 +1,5 @@
 import express from 'express'
-import { deleteUserById, getUserById, getUsers, updateUserById } from '../models/users'
+import { deleteUserById, UserModel, getUserById, getUsers, updateUserById } from '../models/users'
 
 
 export const getAllUsers = async (req: express.Request, res: express.Response) => {
@@ -96,3 +96,15 @@ export const dummyUserSayHi = async (req: express.Request, res: express.Response
     }
 }
 
+export const getUserCount = async (req: express.Request, res: express.Response) => {
+    try {
+        // Get the count of users in the database
+        const userCount = await UserModel.countDocuments();
+
+        // Return the count as a response
+        return res.status(200).json({ count: userCount });
+    } catch (error) {
+        console.error('Error fetching user count:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
